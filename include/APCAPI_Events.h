@@ -53,7 +53,7 @@ namespace APCAPI
         Shift = 20,
         Bank = 21,
 
-        AssignableKnob = 22,
+        TrackKnob = 22,
         DeviceKnob = 23,
 
         DeviceOnOff = 32,

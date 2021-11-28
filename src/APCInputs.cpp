@@ -39,7 +39,7 @@ void APC40MkII::APCCore::handleKnobsAndFaders(std::vector<unsigned char>& msg, E
         event->direction = msg[2];
         return;
     } else if (msg[1] >= 0x30 && msg[1] <= 0x37) {
-        event->type = EventType::AssignableKnob;
+        event->type = EventType::TrackKnob;
         event->trackId = msg[1] - 0x30; // knob index
     }
     event->value = msg[2];  

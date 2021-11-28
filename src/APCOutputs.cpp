@@ -64,11 +64,13 @@ void APC40MkII::setTrackSelector(int trackId)
 {
     if (!_->m_connected) return;
     if (trackId > 8) return;
-    _->sendMsg({
-        (unsigned char)(0x90 | trackId),
-        (unsigned char)0x33,
-        (unsigned char)0x01
-    });
+    for (int iTrack = 0; iTrack < 9; iTrack++) {
+        _->sendMsg({
+            (unsigned char)(0x90 | iTrack),
+            (unsigned char)0x33,
+            (unsigned char)(iTrack == trackId)
+        });
+	}
 }
 
 void APC40MkII::setTrackActivator(int trackId, bool enabled)
