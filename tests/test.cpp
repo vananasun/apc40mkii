@@ -46,6 +46,7 @@ int main()
 
         test_colors();
         g_apc->setTrackSelector(7);
+        g_apc->setTrackActivator(2, true);
 
         // Read events
         APCAPI::Event e;

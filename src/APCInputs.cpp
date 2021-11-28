@@ -50,8 +50,8 @@ void APC40MkII::APCCore::handleTrackMessages(std::vector<unsigned char>& msg, Ev
 {
     event->trackId = msg[0] & 0x0F;
 
-    if        (msg[1] == 0x30) { event->type = EventType::RecordArm;
-    } else if (msg[1] == 0x31) { event->type = EventType::Solo;
+    if        (msg[1] == 0x30) { event->type = EventType::TrackRecord;
+    } else if (msg[1] == 0x31) { event->type = EventType::TrackSolo;
     } else if (msg[1] == 0x32) { event->type = EventType::TrackActivator;
     } else if (msg[1] == 0x33) { event->type = EventType::TrackSelector;
     } else if (msg[1] == 0x34) { event->type = EventType::ClipStop;
@@ -64,7 +64,7 @@ void APC40MkII::APCCore::handleTrackMessages(std::vector<unsigned char>& msg, Ev
     } else if (msg[1] == 0x40) { event->type = EventType::ClipDeviceView;
     } else if (msg[1] == 0x41) { event->type = EventType::DetailView;
     } else if (msg[1] == 0x42) {
-        event->type = EventType::CrossfadeAssign;
+        event->type = EventType::TrackAB;
         event->value = msg[2]; // 0 = none, 1 = A, 2 = B
         return;
     }

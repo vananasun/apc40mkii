@@ -42,9 +42,9 @@ namespace APCAPI
         TrackSelector = 25,
         TrackActivator = 5,
         TrackFader = 24,
-        Solo = 6,
-        RecordArm = 7,
-        CrossfadeAssign = 8,
+        TrackSolo = 6,
+        TrackRecord = 7,
+        TrackAB = 8,
 
         BankSelectLeft = 16,
         BankSelectUp = 17,
