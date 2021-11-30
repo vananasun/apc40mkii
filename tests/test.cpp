@@ -24,7 +24,7 @@ void test_colors() {
 void error_callback(const std::string& msg, void *userData)
 {
     (void)(userData);
-    std::cout << msg << std::endl;
+    std::cout << "Error: " << msg << std::endl;
     g_done = true;
 }
 

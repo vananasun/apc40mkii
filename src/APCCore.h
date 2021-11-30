@@ -19,6 +19,7 @@ struct APC40MkII::APCCore
     ErrorCallback m_errorCallback;
     void* m_userData;
     bool m_connected = false;
+    bool m_errored = false;
 
     static void RtMidiErrorCallback(RtMidiError::Type type, const std::string& errorText, void* userData);
     int findInputPortIndex();
