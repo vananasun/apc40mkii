@@ -43,7 +43,6 @@ void APC40MkII::resetDisplay()
     setTapTempo(false);
     setStopAllClips(false);
     setTrackSelector(0);
-    // _->m_selectedTrack = 0;
 
 }
 
