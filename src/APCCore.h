@@ -1,5 +1,8 @@
 #pragma once
+#include "APCAPI.h"
 #include "./RtMidi.h"
+#include <thread>
+#include <queue>
 
 using namespace APCAPI;
 
@@ -14,6 +17,9 @@ struct APCMessage
 
 struct APC40MkII::APCCore
 {
+    bool m_midiThreadRunning;
+    std::thread m_midiThread;
+    std::queue<APCMessage> m_messageQueue;
     RtMidiIn* m_midiIn;
     RtMidiOut* m_midiOut;
     ErrorCallback m_errorCallback;
@@ -30,5 +36,7 @@ struct APC40MkII::APCCore
     void handleTrackMessages(std::vector<unsigned char>& msg, Event* event);
     void handleButtons(std::vector<unsigned char>& msg, Event* event);
     void resetDisplayImp();
+    void spawnMidiThread();
+    void midiThreadProc();
 
 };

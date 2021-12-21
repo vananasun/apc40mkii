@@ -6,7 +6,6 @@
 using namespace APCAPI;
 
 
-
 APC40MkII::APC40MkII(ErrorCallback errorCallback, void* userData)
 {
     _ = (APCCore*)calloc(1, sizeof(APCCore));
@@ -21,8 +20,10 @@ APC40MkII::APC40MkII(ErrorCallback errorCallback, void* userData)
     if (0 == _->m_midiIn->getPortCount()) {
         _->m_errored = true;
         _->m_errorCallback("The APC40 mkII does not seem to be on and connected.", _->m_userData);
+        return;
     }
 
+    _->m_messageQueue = std::queue<APCMessage>();
 }
 
 
@@ -61,6 +62,7 @@ bool APC40MkII::connect()
     _->m_midiOut->setErrorCallback(APCCore::RtMidiErrorCallback, this);
 
     _->sendStartupMessage();
+    _->spawnMidiThread();
     _->m_connected = true;
     resetDisplay();
     return true;
@@ -71,6 +73,8 @@ void APC40MkII::disconnect()
 {
     if (!_->m_connected) return;
     resetDisplay();
+    _->m_midiThreadRunning = false;
+    if (_->m_midiThread.joinable()) _->m_midiThread.join();
     _->m_midiIn->closePort();
     _->m_midiOut->closePort();
     _->m_connected = false;
@@ -133,5 +137,5 @@ void APC40MkII::APCCore::sendStartupMessage()
 
 void APC40MkII::APCCore::sendMsg(APCMessage msg)
 {
-    m_midiOut->sendMessage(reinterpret_cast<unsigned char*>(&msg), sizeof(APCMessage));
+    m_messageQueue.push(msg);
 }
