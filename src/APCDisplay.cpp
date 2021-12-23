@@ -23,6 +23,10 @@ void APC40MkII::resetDisplay()
         setTrackKnob(iTrack, 0);
     }
 
+    for (int iScene = 0; iScene < 5; iScene++) {
+        setSceneLaunch(iScene, Color::Off);
+    }
+
     for (int iKnob = 0; iKnob < 8; iKnob++) {
         setDeviceKnob(iKnob, 0);
     }
@@ -41,7 +45,6 @@ void APC40MkII::resetDisplay()
     setDeviceOnOff(false);
     setDeviceLock(false);
     setTapTempo(false);
-    setStopAllClips(false);
     setTrackSelector(0);
 
 }

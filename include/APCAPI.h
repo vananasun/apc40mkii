@@ -46,7 +46,7 @@ namespace APCAPI
         void setSends(bool enabled);
         void setUser(bool enabled);
 
-        void setSceneLaunch(int row, bool enabled);
+        void setSceneLaunch(int row, Color color);
         void setTrackSelector(int trackId);
         void setTrackActivator(int trackId, bool enabled);
         void setTrackSolo(int trackId, bool enabled);
@@ -55,7 +55,6 @@ namespace APCAPI
         void setTrackKnob(int knobIndex, unsigned char value);
         void setClipStop(int trackId, bool enabled);
         void setClip(int x, int y, Color color);
-        void setStopAllClips(bool enabled);
     
         void setDeviceOnOff(bool enabled);
         void setDeviceLock(bool enabled);
