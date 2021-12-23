@@ -69,4 +69,25 @@ namespace APCAPI
 
     };
 
+
+
+    
+    /**
+     *  \brief Converts a clip ID to a set of X,Y coordinates.
+     *         [0,0] = Bottom left!
+     * 
+     *  \returns [ x, y ]
+     */
+    template <typename T>
+    inline constexpr std::pair<T,T> clipNum2Coords(T clipId)
+    {
+        if constexpr (std::is_floating_point_v<T>) {
+            T y = static_cast<T>(std::floor(clipId / 8));
+            T x = static_cast<T>(static_cast<unsigned char>(clipId) & 7);
+            return { x, y };
+        } else {
+            return { (clipId & 7), (clipId / 8) };
+        }
+    }
+
 };

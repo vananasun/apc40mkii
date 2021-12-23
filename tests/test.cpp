@@ -13,13 +13,23 @@ void finish(int ignore) // interrupt handler
 }
 
 
-void test_colors() {
+void test_colors()
+{
     for (int y = 0; y < 5; y++) {
         for (int x = 0; x < 8; x++) {
             g_apc->setClip(x, y, APCAPI::Color::Magenta);
         }
     }
 }
+
+void test_clip_xy()
+{
+    for (float clipId = 0; clipId < 8*5; clipId++) {
+        auto [xx, yy] = APCAPI::clipNum2Coords(clipId);
+        std::cout << "Clip XY: " << xx << ", " << yy << std::endl;
+    }
+}
+
 
 void error_callback(const std::string& msg, void *userData)
 {
@@ -42,9 +52,12 @@ int main()
     (void)signal(SIGINT, finish); // the quit interrupt handler
 
 
+    test_clip_xy();
+
+
     while (!g_done) {
 
-        test_colors();
+        //test_colors();
         g_apc->setTrackSelector(7);
         g_apc->setTrackActivator(2, true);
 

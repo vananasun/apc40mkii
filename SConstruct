@@ -7,7 +7,7 @@ from subprocess import call
 env = Environment(
     CPPPATH=['./src', './include'],
     CPPDEFINES=['WIN32', '__WINDOWS_MM__'],
-    CCFLAGS='/nologo /EHsc ',
+    CCFLAGS='/nologo /EHsc /std:c++17 ',
 
     SHCXXCOMSTR = "Compiling $TARGET",
     SHLINKCOMSTR = "Linking $TARGET"
