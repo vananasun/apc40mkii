@@ -1,5 +1,5 @@
 #pragma once
-#include "APCAPI.h"
+#include <APCAPI.h>
 #include "./APCMidiThread.h"
 #include "./RtMidi.h"
 

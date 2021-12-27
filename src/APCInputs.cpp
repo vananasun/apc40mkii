@@ -1,9 +1,6 @@
-#include "APCAPI.h"
 #include "./APCCore.h"
+#include <APCAPI.h>
 #include <vector>
-#ifdef DEBUG
-#include <iostream>
-#endif
 
 using namespace APCAPI;
 
@@ -123,12 +120,6 @@ bool APC40MkII::poll(Event* event)
     std::vector<unsigned char> msg;
     _->m_midiIn->getMessage(&msg);
     if (msg.size() < 3) return false;
-    
-#ifdef DEBUG
-    // for (int i = 0; i < msg.size(); i++)
-    //     std::cout << (int)msg[i] << " ";
-    // std::cout << std::endl;
-#endif
 
     memset(event, 0, sizeof(Event));
     if ((msg[0] & 0xF0) == 0xB0) {

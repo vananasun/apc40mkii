@@ -31,4 +31,31 @@ namespace APCAPI
         Orange = 96,
     };
 
+    /**
+     *  \brief The type of LED.
+     *         Primary is just a solid color.
+     *         Oneshot fades toward a color.
+     *         Pulsing fades in and out.
+     *         Blinking flashes on and off.
+     */
+    enum class LEDType {
+        Primary = 0,
+        Oneshot_1_24 = 1,
+        Oneshot_1_16 = 2,
+        Oneshot_1_8 = 3,
+        Oneshot_1_4 = 4,
+        Oneshot_1_2 = 5,
+        Pulsing_1_24 = 6,
+        Pulsing_1_16 = 7,
+        Pulsing_1_8 = 8,
+        Pulsing_1_4 = 9,
+        Pulsing_1_2 = 10,
+        Blinking_1_24= 11,
+        Blinking_1_16 = 12,
+        Blinking_1_8 = 13,
+        Blinking_1_4 = 14,
+        Blinking_1_2 = 15,
+    };
+
+
 }

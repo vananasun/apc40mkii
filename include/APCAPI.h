@@ -55,6 +55,7 @@ namespace APCAPI
         void setTrackKnob(int knobIndex, unsigned char value);
         void setClipStop(int trackId, bool enabled);
         void setClip(int x, int y, Color color);
+        void setClip(int x, int y, Color color, LEDType type);
     
         void setDeviceOnOff(bool enabled);
         void setDeviceLock(bool enabled);

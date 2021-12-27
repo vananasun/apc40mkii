@@ -1,4 +1,4 @@
-#include "APCAPI.h"
+#include <APCAPI.h>
 #include "./APCCore.h"
 #include "./RtMidi.h"
 #include <stdlib.h>

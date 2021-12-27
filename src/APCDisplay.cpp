@@ -1,6 +1,6 @@
-#include <RtMidi.h>
-#include "APCAPI.h"
 #include "./APCCore.h"
+#include "./RtMidi.h"
+#include <APCAPI.h>
 
 using namespace APCAPI;
 
