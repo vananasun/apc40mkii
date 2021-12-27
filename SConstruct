@@ -22,7 +22,7 @@ if int(release):
     env.Append(LINKFLAGS = '')
     build_dir = 'build/release'
 else:
-    env.Append(CCFLAGS = '/MTd')
+    env.Append(CCFLAGS = '/MTd /ZI')
     env.Append(LINKFLAGS = '/DEBUG:FULL')
     env.Append(CPPDEFINES = 'DEBUG')
     build_dir = 'build/debug'
