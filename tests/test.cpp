@@ -24,7 +24,7 @@ void test_colors()
 
 void test_clip_xy()
 {
-    for (float clipId = 0; clipId < 8*5; clipId++) {
+    for (int clipId = 0; clipId < 8*5; clipId++) {
         auto [xx, yy] = APCAPI::clipNum2Coords(clipId);
         std::cout << "Clip XY: " << xx << ", " << yy << std::endl;
     }
@@ -52,14 +52,14 @@ int main()
     (void)signal(SIGINT, finish); // the quit interrupt handler
 
 
-    test_clip_xy();
+    //test_clip_xy();
 
 
     while (!g_done) {
 
-        //test_colors();
-        g_apc->setTrackSelector(7);
-        g_apc->setTrackActivator(2, true);
+        test_colors();
+        //g_apc->setTrackSelector(7);
+       // g_apc->setTrackActivator(2, true);
 
         // Read events
         APCAPI::Event e;

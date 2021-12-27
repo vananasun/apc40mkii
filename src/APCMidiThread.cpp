@@ -1,29 +1,56 @@
-#include "APCAPI.h"
+#include "./APCMidiThread.h"
 #include "./APCCore.h"
 #include "./RtMidi.h"
+#include <APCAPI.h>
 
 using namespace APCAPI;
 
 
-void APC40MkII::APCCore::spawnMidiThread()
+
+void APCMidiThread::spawn(RtMidiOut *midiOut)
 {
-    m_midiThread = std::thread( [this] { this->midiThreadProc(); } );
-    std::queue<APCMessage> empty;
-    std::swap(m_messageQueue, empty);
+    m_midiOut = midiOut;
+    m_messageQueue = std::deque<MIDIMessage>();
+    
+    // std::deque<MIDIMessage> empty;
+    // std::swap(m_messageQueue, empty);
+    m_threadRunning = true;
+    m_thread = std::thread( [this] { this->threadProc(); } );
 }
 
 
-void APC40MkII::APCCore::midiThreadProc()
+void APCMidiThread::close()
 {
-    m_midiThreadRunning = true;
+    m_threadRunning = false;
+    m_cond.notify_one();
+    if (m_thread.joinable()) m_thread.join();
+}
+
+
+void APCMidiThread::threadProc()
+{
+    std::unique_lock<std::mutex> lock(m_mutex);
+
     do {
+        m_cond.wait(lock, [this] { return m_messageQueue.size(); } );
+
         while (m_messageQueue.size() > 0) {
-            APCMessage msg = m_messageQueue.front();
-            m_midiOut->sendMessage(reinterpret_cast<unsigned char*>(&msg), sizeof(APCMessage));
-            m_messageQueue.pop();
+            MIDIMessage msg = m_messageQueue.front();
+            m_messageQueue.pop_front();
+            lock.unlock();
+            m_midiOut->sendMessage(reinterpret_cast<unsigned char*>(&msg), sizeof(MIDIMessage));
+            lock.lock();
         }
 
-        #define THREAD_UPDATE_INTERVAL_MS 4
-        std::this_thread::sleep_for(std::chrono::milliseconds(THREAD_UPDATE_INTERVAL_MS));
-    } while (m_midiThreadRunning);
+    } while (m_threadRunning);
 }
+
+
+void APCMidiThread::sendMsg(MIDIMessage msg)
+{
+    std::unique_lock<std::mutex> lock(m_mutex);
+    m_messageQueue.push_back(msg);
+    lock.unlock();
+    m_cond.notify_one();
+}
+

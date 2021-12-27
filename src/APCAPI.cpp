@@ -5,6 +5,9 @@
 
 using namespace APCAPI;
 
+#define APC40MKII_PORTNAME "APC40 mkII"
+
+
 
 APC40MkII::APC40MkII(ErrorCallback errorCallback, void* userData)
 {
@@ -23,7 +26,7 @@ APC40MkII::APC40MkII(ErrorCallback errorCallback, void* userData)
         return;
     }
 
-    _->m_messageQueue = std::queue<APCMessage>();
+    _->m_midiThread = new APCMidiThread();
 }
 
 
@@ -32,6 +35,7 @@ APC40MkII::~APC40MkII()
     disconnect();
     delete _->m_midiIn;
     delete _->m_midiOut;
+    delete _->m_midiThread;
     free(_);
 }
 
@@ -62,7 +66,7 @@ bool APC40MkII::connect()
     _->m_midiOut->setErrorCallback(APCCore::RtMidiErrorCallback, this);
 
     _->sendStartupMessage();
-    _->spawnMidiThread();
+    _->m_midiThread->spawn(_->m_midiOut);
     _->m_connected = true;
     resetDisplay();
     return true;
@@ -73,8 +77,7 @@ void APC40MkII::disconnect()
 {
     if (!_->m_connected) return;
     resetDisplay();
-    _->m_midiThreadRunning = false;
-    if (_->m_midiThread.joinable()) _->m_midiThread.join();
+    _->m_midiThread->close();
     _->m_midiIn->closePort();
     _->m_midiOut->closePort();
     _->m_connected = false;
@@ -135,7 +138,7 @@ void APC40MkII::APCCore::sendStartupMessage()
 }
 
 
-void APC40MkII::APCCore::sendMsg(APCMessage msg)
+void APC40MkII::APCCore::sendMsg(MIDIMessage msg)
 {
-    m_messageQueue.push(msg);
+    m_midiThread->sendMsg(msg);
 }

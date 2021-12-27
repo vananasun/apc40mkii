@@ -173,7 +173,7 @@ void APC40MkII::setClip(int x, int y, Color color)
     if (x < 0 || x > 7 || y < 0 || y > 4) return;
     _->sendMsg({
         (unsigned char)(color == Color::Off ? 0x80 : 0x90),
-        (unsigned char)((32 + x) - (y * 8)),
+        (unsigned char)(x + (y * 8)),
         (unsigned char)(color)
     });
 }

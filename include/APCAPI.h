@@ -35,7 +35,7 @@ namespace APCAPI
         bool poll(Event* event);
 
 
-        /** Host to device output methods */
+        /* Host to device output methods */
 
         void setPlay(bool enabled);
         void setRecord(bool enabled);
@@ -71,23 +71,27 @@ namespace APCAPI
 
 
 
-    
     /**
      *  \brief Converts a clip ID to a set of X,Y coordinates.
      *         [0,0] = Bottom left!
      * 
+     *  \param clipId
+     * 
      *  \returns [ x, y ]
      */
     template <typename T>
-    inline constexpr std::pair<T,T> clipNum2Coords(T clipId)
+    inline const constexpr std::pair<T,T> clipNum2Coords(T clipId)
     {
+        T x, y;
         if constexpr (std::is_floating_point_v<T>) {
-            T y = static_cast<T>(std::floor(clipId / 8));
-            T x = static_cast<T>(static_cast<unsigned char>(clipId) & 7);
-            return { x, y };
+            y = static_cast<T>(static_cast<int>(clipId) >> 3);
+            x = static_cast<T>(static_cast<int>(clipId) & 7);
         } else {
-            return { (clipId & 7), (clipId / 8) };
+            y = static_cast<T>(static_cast<std::make_unsigned<T>::type>(clipId) >> 3);
+            x = static_cast<T>(static_cast<std::make_unsigned<T>::type>(clipId) & 7);
         }
+        return { x, y };
     }
+
 
 };
