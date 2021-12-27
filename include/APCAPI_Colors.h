@@ -18,17 +18,21 @@ namespace APCAPI
      *  \brief Read the color table at page 18 through 22 of the provided
      *         "APC40 mkII Communications Protocol v1.2.pdf".
      *         The "Velocity" column is the color ID.
+     *         https://jsfiddle.net/rohdpj97/3/ <- My color table
      */
     enum class Color {
         Off = 0,
         White = 3,
         Red = 5,
+        Yellow = 13,
         Green = 21,
         Blue = 45,
+        Purple = 48,
         Cyan = 37,
-        Yellow = 13,
         Magenta = 53,
         Orange = 96,
+        DarkGrey = 117,
+        Grey = 2,
     };
 
     /**

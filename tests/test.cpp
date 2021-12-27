@@ -54,14 +54,15 @@ void show_hello()
     
 }
 
-unsigned char g_scene = 0;
 void test_scene_colors()
 {
+    APCAPI::Color c = (APCAPI::Color)APCAPI::Color::Orange;
     for (int i = 0; i < 5; i++) {
-        g_apc->setSceneLaunch(i, (APCAPI::Color)g_scene);
-        g_scene++;
-        if (g_scene > 127) g_scene = 0;
+        g_apc->setSceneLaunch(i, c);
     }
+
+    g_apc->setClip(7, 4, c);
+
 }
 
 
@@ -83,7 +84,7 @@ int main()
 
     while (!g_done) {
 
-        test_scene_colors();
+        //test_scene_colors();
 
         // Read events
         APCAPI::Event e;

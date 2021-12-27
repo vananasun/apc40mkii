@@ -50,12 +50,12 @@ void APC40MkII::setDetailView(bool enabled) { setBooleanLED(0x41); }
 
 
 
-void APC40MkII::setSceneLaunch(int row, Color color)
+void APC40MkII::setSceneLaunch(int row, Color color, LEDType type)
 {
     if (!_->m_connected) return;
     if (row < 0 || row > 4) return;
     _->sendMsg({
-        (unsigned char)(color == Color::Off ? 0x80 : 0x90),
+        (unsigned char)((color == Color::Off ? 0x80 : 0x90) | (unsigned char)type),
         (unsigned char)(0x52 + row),
         (unsigned char)color
     });
@@ -167,16 +167,6 @@ void APC40MkII::setClipStop(int trackId, bool enabled)
 }
 
 
-void APC40MkII::setClip(int x, int y, Color color)
-{
-    if (!_->m_connected) return;
-    if (x < 0 || x > 7 || y < 0 || y > 4) return;
-    _->sendMsg({
-        (unsigned char)(color == Color::Off ? 0x80 : 0x90),
-        (unsigned char)(x + (y * 8)),
-        (unsigned char)(color)
-    });
-}
 
 void APC40MkII::setClip(int x, int y, Color color, LEDType type)
 {

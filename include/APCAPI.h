@@ -46,7 +46,7 @@ namespace APCAPI
         void setSends(bool enabled);
         void setUser(bool enabled);
 
-        void setSceneLaunch(int row, Color color);
+        void setSceneLaunch(int row, Color color, LEDType type = LEDType::Primary);
         void setTrackSelector(int trackId);
         void setTrackActivator(int trackId, bool enabled);
         void setTrackSolo(int trackId, bool enabled);
@@ -54,8 +54,7 @@ namespace APCAPI
         void setTrackAB(int trackId, int state);
         void setTrackKnob(int knobIndex, unsigned char value);
         void setClipStop(int trackId, bool enabled);
-        void setClip(int x, int y, Color color);
-        void setClip(int x, int y, Color color, LEDType type);
+        void setClip(int x, int y, Color color, LEDType type = LEDType::Primary);
     
         void setDeviceOnOff(bool enabled);
         void setDeviceLock(bool enabled);
