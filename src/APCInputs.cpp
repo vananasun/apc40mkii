@@ -8,7 +8,7 @@ using namespace APCAPI;
  *  \param msg MIDI message byte vector
  *  \returns Whether the given MIDI message was a Note-On or Note-Off message.
  */
-static bool isOnMsg(std::vector<unsigned char>& msg)
+static inline bool isOnMsg(std::vector<unsigned char>& msg)
 {
     return ((msg[0] & 0x90) == 0x90);
 }
@@ -30,10 +30,10 @@ void APC40MkII::APCCore::handleKnobsAndFaders(std::vector<unsigned char>& msg, E
         event->type = EventType::Crossfader;
     } else if (msg[1] >= 0x10 && msg[1] <= 0x17) {
         event->type = EventType::DeviceKnob;
-        event->trackId = msg[1] - 0x10; // physical knob index
+        event->knobId = msg[1] - 0x10; // physical knob index
     } else if (msg[1] == 0x2F) {
         event->type = EventType::CueLevel;
-        event->direction = msg[2];
+        event->direction = (msg[2] <= 63) ? msg[2] : msg[2] + 0x80;
         return;
     } else if (msg[1] >= 0x30 && msg[1] <= 0x37) {
         event->type = EventType::TrackKnob;

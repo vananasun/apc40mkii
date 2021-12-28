@@ -45,17 +45,7 @@ namespace APCAPI
         void setPan(bool enabled);
         void setSends(bool enabled);
         void setUser(bool enabled);
-
-        void setSceneLaunch(int row, Color color, LEDType type = LEDType::Primary);
-        void setTrackSelector(int trackId);
-        void setTrackActivator(int trackId, bool enabled);
-        void setTrackSolo(int trackId, bool enabled);
-        void setTrackRecord(int trackId, bool enabled);
-        void setTrackAB(int trackId, int state);
-        void setTrackKnob(int knobIndex, unsigned char value);
-        void setClipStop(int trackId, bool enabled);
-        void setClip(int x, int y, Color color, LEDType type = LEDType::Primary);
-    
+        void setMasterSelector(bool enabled);
         void setDeviceOnOff(bool enabled);
         void setDeviceLock(bool enabled);
         void setDeviceLeft(bool enabled);
@@ -66,6 +56,17 @@ namespace APCAPI
         void setBankRight(bool enabled);
         void setClipDeviceView(bool enabled);
         void setDetailView(bool enabled);
+
+        void setTrackSelector(int trackId);
+        void setTrackActivator(int trackId, bool enabled);
+        void setTrackSolo(int trackId, bool enabled);
+        void setTrackRecord(int trackId, bool enabled);
+        void setTrackAB(int trackId, int state);
+        void setTrackKnob(int knobIndex, unsigned char value);
+        void setClipStop(int trackId, bool enabled);
+
+        void setClip(int x, int y, Color color, LEDType type = LEDType::Primary);
+        void setSceneLaunch(int row, Color color, LEDType type = LEDType::Primary);
 
     };
 
@@ -80,7 +81,7 @@ namespace APCAPI
      *  \returns [ x, y ]
      */
     template <typename T>
-    inline const constexpr std::pair<T,T> clipNum2Coords(T clipId)
+    inline const constexpr std::pair<T,T> ClipNum2Coords(T clipId)
     {
         T x, y;
         if constexpr (std::is_floating_point_v<T>) {

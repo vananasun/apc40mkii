@@ -44,8 +44,11 @@ void APC40MkII::resetDisplay()
     setDeviceRight(false);
     setDeviceOnOff(false);
     setDeviceLock(false);
+    setBankLeft(false);
+    setBankRight(false);
     setTapTempo(false);
     setTrackSelector(0);
+    setMasterSelector(false);
 
 }
 

@@ -48,6 +48,8 @@ void APC40MkII::setClipDeviceView(bool enabled) { setBooleanLED(0x40); }
 
 void APC40MkII::setDetailView(bool enabled) { setBooleanLED(0x41); }
 
+void APC40MkII::setMasterSelector(bool enabled) { setBooleanLED(0x50); }
+
 
 
 void APC40MkII::setSceneLaunch(int row, Color color, LEDType type)
@@ -81,8 +83,8 @@ void APC40MkII::setSceneLaunch(int row, Color color, LEDType type)
 void APC40MkII::setTrackSelector(int trackId)
 {
     if (!_->m_connected) return;
-    if (trackId > 8) return;
-    for (int iTrack = 0; iTrack < 9; iTrack++) {
+    if (trackId < 0 || trackId > 7) return;
+    for (int iTrack = 0; iTrack < 8; iTrack++) {
         _->sendMsg({
             (unsigned char)(0x90 | iTrack),
             (unsigned char)0x33,
