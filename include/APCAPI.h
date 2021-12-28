@@ -25,7 +25,7 @@ namespace APCAPI
      */
     enum class Mode
     {
-        Generic = 0,
+        Generic = 0, // I highly recommend against this mode
         Ableton = 1, // Default (and recommended) for this API
         AlternateAbleton = 2,
     };
