@@ -61,6 +61,7 @@ namespace APCAPI
         ClipDeviceView,
         DetailView,
         Crossfader,
+        Footswitch
 
     };
     
@@ -107,11 +108,12 @@ namespace APCAPI
         "ClipDeviceView",
         "DetailView",
         "Crossfader",
+        "Footswitch"
     };
 
     inline const char *GetEventTypeString(EventType type)
     {
-        if (type >= EventType::None && type <= EventType::Crossfader)
+        if (type >= EventType::None && type <= EventType::Footswitch)
             return EventTypeAsString[static_cast<int>(type)];
         return nullptr;
     };

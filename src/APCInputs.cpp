@@ -103,6 +103,9 @@ void APC40MkII::APCCore::handleButtons(std::vector<unsigned char>& msg, Event* e
     } else if (msg[1] >= 0x52 && msg[1] <= 0x56) {
         event->type = EventType::SceneLaunch;
         event->sceneId = msg[1] - 0x52;
+    } else if (msg[1] == 0x40) {
+        event->type = EventType::Footswitch;
+        event->value = msg[2] & 1; // said to be 0x7F when pressed, 0x00 when released
     }
 
 }
