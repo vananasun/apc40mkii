@@ -6,19 +6,24 @@
 using namespace APCAPI;
 
 
-
+/**
+ *  \brief Starts MIDI output thread.
+ * 
+ *  \param midiOut
+ */
 void APCMidiThread::spawn(RtMidiOut *midiOut)
 {
     m_midiOut = midiOut;
     m_messageQueue = std::deque<MIDIMessage>();
     
-    // std::deque<MIDIMessage> empty;
-    // std::swap(m_messageQueue, empty);
     m_threadRunning = true;
     m_thread = std::thread( [this] { this->threadProc(); } );
 }
 
 
+/**
+ *  \brief Stops MIDI output thread.
+ */
 void APCMidiThread::close()
 {
     m_threadRunning = false;
@@ -27,12 +32,15 @@ void APCMidiThread::close()
 }
 
 
+/**
+ *  \brief This message pump safely pops messages off the queue and sends them.
+ */
 void APCMidiThread::threadProc()
 {
     std::unique_lock<std::mutex> lock(m_mutex);
 
     do {
-        m_cond.wait_for(lock, std::chrono::duration(std::chrono::milliseconds(1)), [this] { return m_messageQueue.size(); } );
+        m_cond.wait(lock, [this] { return m_messageQueue.size(); } );
 
         while (m_messageQueue.size() > 0) {
             MIDIMessage msg = m_messageQueue.front();
@@ -46,6 +54,13 @@ void APCMidiThread::threadProc()
 }
 
 
+/**
+ *  \brief  Pushes a 3 byte MIDI message to the queue.
+ *          The reason we use a message queue is because sending RtMidi messages
+ *          is a blocking operation.
+ * 
+ *  \param msg
+ */
 void APCMidiThread::sendMsg(MIDIMessage msg)
 {
     std::unique_lock<std::mutex> lock(m_mutex);
