@@ -17,7 +17,8 @@ namespace APCAPI
 {
     
     /**
-     *  \brief Read the color table at page 18 through 22 of the provided
+     *  \brief There are 128 colors in total.
+     *         Read the color table at page 18 through 22 of the provided
      *         "APC40 mkII Communications Protocol v1.2.pdf".
      *         The "Velocity" column is the color ID.
      *         https://jsfiddle.net/rohdpj97/3/ <- My color table
@@ -94,5 +95,12 @@ namespace APCAPI
         Volume = 2,
         Pan = 3,
     };
+
+
+    /** Utility functions */
+    
+    struct RGB { unsigned char r,g,b; };
+    Color GetNearestColor(RGB rgb);
+    const RGB Color2RGB(Color color);
 
 }

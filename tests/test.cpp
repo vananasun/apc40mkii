@@ -78,37 +78,19 @@ void ShowHello(APCAPI::APC40MkII &apc)
     apc.setClipStop(1, APCAPI::ClipStopLED::On);
     apc.setClipStop(2, APCAPI::ClipStopLED::Blink);
 
-    // "HI!" clips
-    for (int y = 0; y < 5; y++)
-        for (int x = 0; x < 8; x++)
-            apc.setClip(x, y, APCAPI::Color::White, APCAPI::LEDType::Pulsing_1_4);
-    APCAPI::Color col = APCAPI::Color::Red;
-    apc.setClip(1, 0, col);
-    apc.setClip(1, 1, col);
-    apc.setClip(1, 2, col);
-    apc.setClip(1, 3, col);
-    apc.setClip(1, 4, col);
-    apc.setClip(2, 2, col);
-    apc.setClip(3, 0, col);
-    apc.setClip(3, 1, col);
-    apc.setClip(3, 2, col);
-    apc.setClip(3, 3, col);
-    apc.setClip(3, 4, col);
-    apc.setClip(5, 0, col);
-    apc.setClip(5, 1, col);
-    apc.setClip(5, 2, col);
-    apc.setClip(5, 4, col);
-    apc.setClip(7, 0, col);
-    apc.setClip(7, 2, col);
-    apc.setClip(7, 3, col);
-    apc.setClip(7, 4, col);
+    // Gradient
+    for (int x = 0; x < 9; x++) {
+        APCAPI::RGB rgb = { (unsigned char)(255.0f / 8.0f * x), 0, 255 };
+        APCAPI::Color col = APCAPI::GetNearestColor(rgb);
 
-    // Scene colors
-    APCAPI::Color c = (APCAPI::Color)APCAPI::Color::Orange;
-    for (int i = 0; i < 5; i++) {
-        apc.setSceneLaunch(i, c);
+        if (x == 8)
+            for (int y = 0; y < 5; y++)
+                apc.setSceneLaunch(y, col);
+        else
+            for (int y = 0; y < 5; y++)
+                apc.setClip(x, y, col);
     }
-    apc.setClip(7, 4, c);
+
 }
 
 
