@@ -60,11 +60,7 @@ void APC40MkII::APCCore::handleTrackMessages(std::vector<unsigned char>& msg, Ev
     } else if (msg[1] == 0x3F) { event->type = EventType::DeviceLock;
     } else if (msg[1] == 0x40) { event->type = EventType::ClipDeviceView;
     } else if (msg[1] == 0x41) { event->type = EventType::DetailView;
-    } else if (msg[1] == 0x42) {
-        event->type = EventType::TrackAB;
-        event->value = msg[2]; // 0 = none, 1 = A, 2 = B
-        return;
-    }
+    } else if (msg[1] == 0x42) { event->type = EventType::TrackAB; }
     
     event->value = static_cast<unsigned char>(isOnMsg(msg));
 }

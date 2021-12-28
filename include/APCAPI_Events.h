@@ -9,80 +9,153 @@
   the provided official "APC40 mkII Communications Protocol v1.2.pdf".
 */
 
+// You do not need to include this file separately.
+
 #pragma once
+#include <utility>
 
 namespace APCAPI
 {
     
-    /**
-     *  \brief Input types received from the APC
-     */
-    enum class EventType {
+    enum class EventType
+    {
         None = 0,
 
-        PlayStop = 1,
-        Record = 2,
-        Session = 3,
-        Metronome = 10,
-        TapTempo = 11,
-        Nudge = 15,
-        Pan = 12,
-        Sends = 13,
-        User = 14,
-        Tempo = 37,
+        PlayStop,
+        Record,
+        Session,
+        Metronome,
+        TapTempo,
+        Nudge,
+        Pan,
+        Sends,
+        User,
+        Tempo,
+        ClipLaunch,
+        ClipStop,
+        StopAllClips,
+        SceneLaunch,
+        CueLevel,
+        MasterSelector,
+        MasterFader,
+        TrackSelector,
+        TrackActivator,
+        TrackFader,
+        TrackSolo,
+        TrackRecord,
+        TrackAB,
+        BankSelectLeft,
+        BankSelectUp,
+        BankSelectRight,
+        BankSelectDown,
+        Shift,
+        Bank,
+        TrackKnob,
+        DeviceKnob,
+        DeviceOnOff,
+        DeviceLock,
+        DeviceLeft,
+        DeviceRight,
+        BankLeft,
+        BankRight,
+        ClipDeviceView,
+        DetailView,
+        Crossfader,
 
-        ClipLaunch = 38,
-        ClipStop = 9,
-        StopAllClips = 39,
-        SceneLaunch = 4,
-        CueLevel = 36,
-        MasterSelector = 40,
-        MasterFader = 35,
+    };
+    
+    inline const char *EventTypeAsString[] =
+    {
+        "None",
+        "PlayStop",
+        "Record",
+        "Session",
+        "Metronome",
+        "TapTempo",
+        "Nudge",
+        "Pan",
+        "Sends",
+        "User",
+        "Tempo",
+        "ClipLaunch",
+        "ClipStop",
+        "StopAllClips",
+        "SceneLaunch",
+        "CueLevel",
+        "MasterSelector",
+        "MasterFader",
+        "TrackSelector",
+        "TrackActivator",
+        "TrackFader",
+        "TrackSolo",
+        "TrackRecord",
+        "TrackAB",
+        "BankSelectLeft",
+        "BankSelectUp",
+        "BankSelectRight",
+        "BankSelectDown",
+        "Shift",
+        "Bank",
+        "TrackKnob",
+        "DeviceKnob",
+        "DeviceOnOff",
+        "DeviceLock",
+        "DeviceLeft",
+        "DeviceRight",
+        "BankLeft",
+        "BankRight",
+        "ClipDeviceView",
+        "DetailView",
+        "Crossfader",
+    };
 
-        TrackSelector = 25,
-        TrackActivator = 5,
-        TrackFader = 24,
-        TrackSolo = 6,
-        TrackRecord = 7,
-        TrackAB = 8,
-
-        BankSelectLeft = 16,
-        BankSelectUp = 17,
-        BankSelectRight = 18,
-        BankSelectDown = 19,
-        Shift = 20,
-        Bank = 21,
-
-        TrackKnob = 22,
-        DeviceKnob = 23,
-
-        DeviceOnOff = 32,
-        DeviceLock = 33,
-        DeviceLeft = 26,
-        DeviceRight = 27,
-
-        BankLeft = 30,
-        BankRight = 31,
-
-        ClipDeviceView = 33,
-        DetailView = 34,
-        Crossfader = 41,
-
+    inline const char *GetEventTypeString(EventType type)
+    {
+        if (type >= EventType::None && type <= EventType::Crossfader)
+            return EventTypeAsString[static_cast<int>(type)];
+        return nullptr;
     };
 
 
-    struct Event {
-        APCAPI::EventType type = APCAPI::EventType::None;
+    /**
+     *  \brief Converts a clip ID to a set of X,Y coordinates.
+     *         [0,0] = Bottom left!
+     * 
+     *  \param clipId
+     * 
+     *  \returns [ x, y ]
+     */
+    template <typename T>
+    inline const constexpr std::pair<T,T> ClipId2Coords(T clipId)
+    {
+        T x, y;
+        if constexpr (std::is_floating_point_v<T>) {
+            y = static_cast<T>(static_cast<int>(clipId) >> 3);
+            x = static_cast<T>(static_cast<int>(clipId) & 7);
+        } else {
+            y = static_cast<T>(static_cast<std::make_unsigned<T>::type>(clipId) >> 3);
+            x = static_cast<T>(static_cast<std::make_unsigned<T>::type>(clipId) & 7);
+        }
+        return { x, y };
+    }
+
+
+    /**  \see tests/test.cpp GetEventInfo() */
+    struct Event
+    {
+        EventType type = EventType::None;
         union {
-            unsigned char value = 0;
-            char direction;
+            unsigned char value = 0; // 0 to 127
+            char direction; // +, -
         };
         union {
             unsigned char trackId = 0;
             unsigned char sceneId;
             unsigned char clipId;
+            unsigned char knobId;
         };
     };
+
 
 }
 

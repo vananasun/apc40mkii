@@ -61,7 +61,7 @@ namespace APCAPI
         void setTrackActivator(int trackId, bool enabled);
         void setTrackSolo(int trackId, bool enabled);
         void setTrackRecord(int trackId, bool enabled);
-        void setTrackAB(int trackId, int state);
+        void setTrackAB(int trackId, TrackAB state);
         void setTrackKnob(int knobIndex, unsigned char value);
         void setClipStop(int trackId, bool enabled);
 
@@ -69,30 +69,6 @@ namespace APCAPI
         void setSceneLaunch(int row, Color color, LEDType type = LEDType::Primary);
 
     };
-
-
-
-    /**
-     *  \brief Converts a clip ID to a set of X,Y coordinates.
-     *         [0,0] = Bottom left!
-     * 
-     *  \param clipId
-     * 
-     *  \returns [ x, y ]
-     */
-    template <typename T>
-    inline const constexpr std::pair<T,T> ClipNum2Coords(T clipId)
-    {
-        T x, y;
-        if constexpr (std::is_floating_point_v<T>) {
-            y = static_cast<T>(static_cast<int>(clipId) >> 3);
-            x = static_cast<T>(static_cast<int>(clipId) & 7);
-        } else {
-            y = static_cast<T>(static_cast<std::make_unsigned<T>::type>(clipId) >> 3);
-            x = static_cast<T>(static_cast<std::make_unsigned<T>::type>(clipId) & 7);
-        }
-        return { x, y };
-    }
 
 
 };

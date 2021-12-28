@@ -17,7 +17,7 @@ void APC40MkII::resetDisplay()
     for (int iTrack = 0; iTrack < 8; iTrack++) {
         setClipStop(iTrack, false);
         setTrackActivator(iTrack, false);
-        setTrackAB(iTrack, 0);
+        setTrackAB(iTrack, TrackAB::Off);
         setTrackSolo(iTrack, false);
         setTrackRecord(iTrack, false);
         setTrackKnob(iTrack, 0);

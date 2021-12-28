@@ -9,6 +9,8 @@
   the provided official "APC40 mkII Communications Protocol v1.2.pdf".
 */
 
+// You do not need to include this file separately.
+
 #pragma once
 
 namespace APCAPI
@@ -61,5 +63,13 @@ namespace APCAPI
         Blinking_1_2 = 15,
     };
 
+    /**
+     *  \brief Track crossfade assignment's possible output states.
+     */
+    enum TrackAB {
+        Off = 0,
+        Yellow = 1,
+        Orange = 2,
+    };
 
 }

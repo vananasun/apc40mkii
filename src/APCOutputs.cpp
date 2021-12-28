@@ -61,23 +61,6 @@ void APC40MkII::setSceneLaunch(int row, Color color, LEDType type)
         (unsigned char)(0x52 + row),
         (unsigned char)color
     });
-    // 1  - White half
-    // 2  - White
-    // 3  - White strong
-    // 4  - Pink strong
-    // 5  - Red strong
-    // 6  - Red half
-    // 7  - Red softest
-    // 8  - Beige
-    // 9  - Orange light
-    // 10 - Orange dark
-    // 11 - Yellow ugly lightest
-    // 12 - Yellow ugly darker
-    // 13 - Neon yellow
-    // 14 - Neon yellow half
-    // 15 - Yellow ugly
-    // 16 - Soft Green lightest
-    // 17 - Soft Green darker
 }
 
 void APC40MkII::setTrackSelector(int trackId)
@@ -131,15 +114,15 @@ void APC40MkII::setTrackRecord(int trackId, bool enabled)
 }
 
 
-void APC40MkII::setTrackAB(int trackId, int state)
+void APC40MkII::setTrackAB(int trackId, TrackAB state)
 {
     if (!_->m_connected) return;
     if (trackId < 0 || trackId > 7) return;
-    unsigned char status = 0x80 | (state ? 0x10 : 0x00) | trackId;
+    unsigned char status = 0x90 | trackId;
     _->sendMsg({
         (unsigned char)status,
         (unsigned char)0x42,
-        (unsigned char)0x7F
+        (unsigned char)state
     });
 }
 
