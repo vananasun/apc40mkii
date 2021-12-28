@@ -19,7 +19,7 @@ struct APC40MkII::APCCore
     static void RtMidiErrorCallback(RtMidiError::Type type, const std::string& errorText, void* userData);
     int findInputPortIndex();
     int findOutputPortIndex();
-    void sendStartupMessage();
+    void sendStartupMessage(Mode mode);
     void sendMsg(MIDIMessage msg);
     void handleKnobsAndFaders(std::vector<unsigned char>& msg, Event* event);
     void handleTrackMessages(std::vector<unsigned char>& msg, Event* event);

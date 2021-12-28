@@ -139,15 +139,50 @@ void APC40MkII::setTrackKnob(int knobIndex, unsigned char value)
 }
 
 
-void APC40MkII::setClipStop(int trackId, bool enabled)
+
+void APC40MkII::setDeviceKnob(int knobIndex, unsigned char value)
+{
+    if (!_->m_connected) return;
+    if (knobIndex < 0 || knobIndex > 7) return;
+    _->sendMsg({
+        (unsigned char)0xB0,
+        (unsigned char)(16 + knobIndex),
+        (unsigned char)CLAMP(value, 0, 127)
+    });
+}
+
+void APC40MkII::setDeviceKnobRingType(int knobIndex, RingType type)
+{
+    if (!_->m_connected) return;
+    if (knobIndex < 0 || knobIndex > 7) return;
+    _->sendMsg({
+        (unsigned char)0xB0,
+        (unsigned char)(0x18 + knobIndex),
+        (unsigned char)type
+    });
+}
+
+void APC40MkII::setTrackKnobRingType(int knobIndex, RingType type)
+{
+    if (!_->m_connected) return;
+    if (knobIndex < 0 || knobIndex > 7) return;
+    _->sendMsg({
+        (unsigned char)0xB0,
+        (unsigned char)(0x38 + knobIndex),
+        (unsigned char)type
+    });
+}
+
+
+void APC40MkII::setClipStop(int trackId, ClipStopLED state)
 {
     if (!_->m_connected) return;
     if (trackId < 0 || trackId > 7) return;
-    unsigned char status = 0x80 | (enabled ? 0x10 : 0x00) | trackId;
+    unsigned char status = 0x80 | (state == ClipStopLED::Off ? 0x00 : 0x10) | trackId;
     _->sendMsg({
         (unsigned char)status,
         (unsigned char)0x34,
-        (unsigned char)0x7F
+        (unsigned char)state
     });
 }
 
@@ -163,17 +198,3 @@ void APC40MkII::setClip(int x, int y, Color color, LEDType type)
         (unsigned char)(color)
     });
 }
-
-
-
-void APC40MkII::setDeviceKnob(int knobIndex, unsigned char value)
-{
-    if (!_->m_connected) return;
-    if (knobIndex < 0 || knobIndex > 7) return;
-    _->sendMsg({
-        (unsigned char)0xB0,
-        (unsigned char)(16 + knobIndex),
-        (unsigned char)CLAMP(value, 0, 127)
-    });
-}
-

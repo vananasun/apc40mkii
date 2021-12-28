@@ -41,7 +41,7 @@ APC40MkII::~APC40MkII()
 
 
 
-bool APC40MkII::connect()
+bool APC40MkII::connect(Mode mode)
 {
     if (_->m_connected) return false;
     if (_->m_errored) { _->m_connected = false; return false; }
@@ -65,7 +65,7 @@ bool APC40MkII::connect()
     _->m_midiIn->setErrorCallback(APCCore::RtMidiErrorCallback, this);
     _->m_midiOut->setErrorCallback(APCCore::RtMidiErrorCallback, this);
 
-    _->sendStartupMessage();
+    _->sendStartupMessage(mode);
     _->m_midiThread->spawn(_->m_midiOut);
     _->m_connected = true;
     resetDisplay();
@@ -118,8 +118,10 @@ int APC40MkII::APCCore::findOutputPortIndex()
 
 
 
-void APC40MkII::APCCore::sendStartupMessage()
+void APC40MkII::APCCore::sendStartupMessage(Mode mode)
 {
+    unsigned char modeId = 0x40 + (int)mode;
+
     unsigned char msg[12] = {
         0xF0,   // MIDI System exclusive message start
         0x47,   // Manufacturers ID Byte
@@ -128,7 +130,7 @@ void APC40MkII::APCCore::sendStartupMessage()
         0x60,   // Message type identifier
         0x00,   // Number of data bytes to follow (most significant)
         0x04,   // Number of data bytes to follow (least significant)
-        0x41,   // Application/Configuration identifier (0x41 is Ableton Live Mode)
+        modeId, // Application/Configuration identifier
         0x00,   // PC application Software version major
         0x00,   // PC application Software version minor
         0x00,   // PC Application Software bug-fix level

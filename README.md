@@ -6,5 +6,7 @@ To build the library, type `scons release=1`, to clean, type `scons -c`.
 
 ## Todo
 - Testing it on OSX, but I don\'t own a Mac sorry :X
+- Assignments for Generic mode 0. It is not advised to use this mode anyway...
+- Creating a C binding.
 
 *By Maxim van Dijk (https://github.com/vananasun/)*

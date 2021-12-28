@@ -20,6 +20,17 @@ namespace APCAPI
     typedef void (*ErrorCallback)(const std::string& msg, void *userData);
 
 
+    /**
+     *  \brief The firmware mode.
+     */
+    enum class Mode
+    {
+        Generic = 0,
+        Ableton = 1, // Default (and recommended) for this API
+        AlternateAbleton = 2,
+    };
+
+
     class APC40MkII
     {
     private:
@@ -29,7 +40,7 @@ namespace APCAPI
     public:
         APC40MkII(ErrorCallback callback, void* userData);
         ~APC40MkII();
-        bool connect();
+        bool connect(Mode mode = Mode::Ableton);
         void disconnect();
         void resetDisplay();
         bool poll(Event* event);
@@ -51,6 +62,7 @@ namespace APCAPI
         void setDeviceLeft(bool enabled);
         void setDeviceRight(bool enabled);
         void setDeviceKnob(int knobIndex, unsigned char value);
+        void setDeviceKnobRingType(int knobIndex, RingType type);
         void setBank(bool enabled);
         void setBankLeft(bool enabled);
         void setBankRight(bool enabled);
@@ -63,7 +75,8 @@ namespace APCAPI
         void setTrackRecord(int trackId, bool enabled);
         void setTrackAB(int trackId, TrackAB state);
         void setTrackKnob(int knobIndex, unsigned char value);
-        void setClipStop(int trackId, bool enabled);
+        void setTrackKnobRingType(int knobIndex, RingType type);
+        void setClipStop(int trackId, ClipStopLED state = ClipStopLED::On);
 
         void setClip(int x, int y, Color color, LEDType type = LEDType::Primary);
         void setSceneLaunch(int row, Color color, LEDType type = LEDType::Primary);

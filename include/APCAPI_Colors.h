@@ -64,12 +64,35 @@ namespace APCAPI
     };
 
     /**
+     *  \brief Clip stop LED state types.
+     */
+    enum class ClipStopLED {
+        Off = 0,
+        On = 1,
+        Blink = 2,
+    };
+
+    /**
      *  \brief Track crossfade assignment's possible output states.
      */
     enum TrackAB {
         Off = 0,
         Yellow = 1,
         Orange = 2,
+    };
+
+    /**
+     *  \brief A knob's LED style. Default is Single.
+     *         Off is no usable knob.
+     *         Single means that only a single LED is ever lit up.
+     *         Volume fills up all LEDs until the knob value.
+     *         Pan fills up LEDs starting from the center.
+     */
+    enum class RingType {
+        Off = 0,
+        Single = 1,
+        Volume = 2,
+        Pan = 3,
     };
 
 }
