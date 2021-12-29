@@ -127,9 +127,9 @@ namespace APCAPI
      * 
      *  \returns [ x, y ]
      */
-    inline const constexpr std::pair<unsigned char,unsigned char> ClipId2Coords(ClipIndex clipId)
+    inline const constexpr std::pair<ClipCoord,ClipCoord> ClipId2Coords(ClipIndex clipId)
     {
-        return { (clipId & 7), (clipId >> 3) };
+        return { static_cast<ClipCoord>(clipId & 7), static_cast<ClipCoord>(clipId >> 3) };
     }
 
 

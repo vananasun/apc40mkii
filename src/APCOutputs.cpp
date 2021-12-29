@@ -51,8 +51,8 @@ void APC40MkII::setDetailView(bool enabled, PageIndex page) { setBooleanLEDBanke
 void APC40MkII::setDeviceKnob(KnobIndex knob, KnobValue value, PageIndex page)
 {
     if (!_->m_connected) return;
-    if (knob < 0 || knob > 7) return;
-    if (page < 0 || page > 8) return;
+    if (knob > 7) return;
+    if (page > 8) return;
     _->sendMsg({
         (unsigned char)(0xB0 | page),
         (unsigned char)(0x10 | knob),
@@ -63,8 +63,8 @@ void APC40MkII::setDeviceKnob(KnobIndex knob, KnobValue value, PageIndex page)
 void APC40MkII::setDeviceKnobRingType(KnobIndex knob, RingType type, PageIndex page)
 {
     if (!_->m_connected) return;
-    if (knob < 0 || knob > 7) return;
-    if (page < 0 || page > 8) return;
+    if (knob > 7) return;
+    if (page > 8) return;
     _->sendMsg({
         (unsigned char)(0xB0 | page),
         (unsigned char)(0x18 | knob),
@@ -79,7 +79,7 @@ void APC40MkII::setDeviceKnobRingType(KnobIndex knob, RingType type, PageIndex p
 void APC40MkII::setTrackSelector(TrackIndex track, bool enabled)
 {
     if (!_->m_connected) return;
-    if (track < 0 || track > 7) return;
+    if (track > 7) return;
     _->sendMsg({
         (unsigned char)((enabled ? 0x90 : 0x80) | track),
         (unsigned char)0x33,
@@ -90,7 +90,7 @@ void APC40MkII::setTrackSelector(TrackIndex track, bool enabled)
 void APC40MkII::setTrackActivator(TrackIndex track, bool enabled)
 {
     if (!_->m_connected) return;
-    if (track < 0 || track > 7) return;
+    if (track > 7) return;
     _->sendMsg({
         (unsigned char)((enabled ? 0x90 : 0x80) | track),
         (unsigned char)0x32,
@@ -101,7 +101,7 @@ void APC40MkII::setTrackActivator(TrackIndex track, bool enabled)
 void APC40MkII::setTrackSolo(TrackIndex track, bool enabled)
 {
     if (!_->m_connected) return;
-    if (track < 0 || track > 7) return;
+    if (track > 7) return;
     _->sendMsg({
         (unsigned char)((enabled ? 0x90 : 0x80) | track),
         (unsigned char)0x31,
@@ -112,7 +112,7 @@ void APC40MkII::setTrackSolo(TrackIndex track, bool enabled)
 void APC40MkII::setTrackRecord(TrackIndex track, bool enabled)
 {
     if (!_->m_connected) return;
-    if (track < 0 || track > 7) return;
+    if (track > 7) return;
     _->sendMsg({
         (unsigned char)((enabled ? 0x90 : 0x80) | track),
         (unsigned char)0x30,
@@ -123,7 +123,7 @@ void APC40MkII::setTrackRecord(TrackIndex track, bool enabled)
 void APC40MkII::setTrackAB(TrackIndex track, DualColor state)
 {
     if (!_->m_connected) return;
-    if (track < 0 || track > 7) return;
+    if (track > 7) return;
     _->sendMsg({
         (unsigned char)((state ? 0x90 : 0x80) | track),
         (unsigned char)0x42,
@@ -134,7 +134,7 @@ void APC40MkII::setTrackAB(TrackIndex track, DualColor state)
 void APC40MkII::setTrackKnob(TrackIndex track, KnobValue value)
 {
     if (!_->m_connected) return;
-    if (track < 0 || track > 7) return;
+    if (track > 7) return;
     _->sendMsg({
         (unsigned char)0xB0,
         (unsigned char)(0x30 | track),
@@ -145,7 +145,7 @@ void APC40MkII::setTrackKnob(TrackIndex track, KnobValue value)
 void APC40MkII::setTrackKnobRingType(TrackIndex track, RingType type)
 {
     if (!_->m_connected) return;
-    if (track < 0 || track > 7) return;
+    if (track > 7) return;
     _->sendMsg({
         (unsigned char)0xB0,
         (unsigned char)(0x38 + track),
@@ -156,7 +156,7 @@ void APC40MkII::setTrackKnobRingType(TrackIndex track, RingType type)
 void APC40MkII::setClipStop(TrackIndex track, ClipStopLED state)
 {
     if (!_->m_connected) return;
-    if (track < 0 || track > 7) return;
+    if (track > 7) return;
     _->sendMsg({
         (unsigned char)((state == ClipStopLED::Off ? 0x80 : 0x90) | track),
         (unsigned char)0x34,
@@ -171,7 +171,7 @@ void APC40MkII::setClipStop(TrackIndex track, ClipStopLED state)
 void APC40MkII::setSceneLaunch(SceneIndex row, Color color, LEDType type)
 {
     if (!_->m_connected) return;
-    if (row < 0 || row > 4) return;
+    if (row > 4) return;
     _->sendMsg({
         (unsigned char)((color == Color::Off ? 0x80 : 0x90) | (unsigned char)type),
         (unsigned char)(0x52 + row),
@@ -179,10 +179,10 @@ void APC40MkII::setSceneLaunch(SceneIndex row, Color color, LEDType type)
     });
 }
 
-void APC40MkII::setClip(int x, int y, Color color, LEDType type)
+void APC40MkII::setClip(ClipCoord x, ClipCoord y, Color color, LEDType type)
 {
     if (!_->m_connected) return;
-    if (x < 0 || x > 7 || y < 0 || y > 4) return;
+    if (x > 7 || y > 4) return;
     _->sendMsg({
         (unsigned char)((color == Color::Off ? 0x80 : 0x90) | (unsigned char)type),
         (unsigned char)(x + (y * 8)),

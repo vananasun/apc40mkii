@@ -79,15 +79,15 @@ void ShowHello(APCAPI::APC40MkII &apc)
     apc.setClipStop(2, APCAPI::ClipStopLED::Blink);
 
     // Gradient
-    for (int x = 0; x < 9; x++) {
+    for (APCAPI::ClipCoord x = 0; x < 9; x++) {
         APCAPI::RGB rgb = { (unsigned char)(255.0f / 8.0f * x), 0, 255 };
         APCAPI::Color col = APCAPI::GetNearestColor(rgb);
 
         if (x == 8)
-            for (int y = 0; y < 5; y++)
+            for (APCAPI::ClipCoord y = 0; y < 5; y++)
                 apc.setSceneLaunch(y, col);
         else
-            for (int y = 0; y < 5; y++)
+            for (APCAPI::ClipCoord y = 0; y < 5; y++)
                 apc.setClip(x, y, col);
     }
 

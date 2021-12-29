@@ -19,12 +19,13 @@ namespace APCAPI
 
     typedef void (*ErrorCallback)(const std::string& msg, void *userData);
     
-    typedef int SceneIndex;
-    typedef int TrackIndex;
-    typedef int PageIndex;
-    typedef int ClipIndex;
-    typedef int KnobIndex;
-    typedef int KnobValue;
+    typedef unsigned char SceneIndex;
+    typedef unsigned char TrackIndex;
+    typedef unsigned char PageIndex;
+    typedef unsigned char ClipIndex;
+    typedef unsigned char ClipCoord;
+    typedef unsigned char KnobIndex;
+    typedef unsigned char KnobValue;
     
     /**
      *  \brief A knob's LED style. Default is Single.
