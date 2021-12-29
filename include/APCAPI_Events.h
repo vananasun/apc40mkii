@@ -127,18 +127,9 @@ namespace APCAPI
      * 
      *  \returns [ x, y ]
      */
-    template <typename T>
-    inline const constexpr std::pair<T,T> ClipId2Coords(T clipId)
+    inline const constexpr std::pair<unsigned char,unsigned char> ClipId2Coords(ClipIndex clipId)
     {
-        T x, y;
-        if constexpr (std::is_floating_point_v<T>) {
-            y = static_cast<T>(static_cast<int>(clipId) >> 3);
-            x = static_cast<T>(static_cast<int>(clipId) & 7);
-        } else {
-            y = static_cast<T>(static_cast<std::make_unsigned<T>::type>(clipId) >> 3);
-            x = static_cast<T>(static_cast<std::make_unsigned<T>::type>(clipId) & 7);
-        }
-        return { x, y };
+        return { (clipId & 7), (clipId >> 3) };
     }
 
 
