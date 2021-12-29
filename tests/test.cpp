@@ -60,12 +60,12 @@ void ErrorCallback(const std::string &msg, void *userData)
 
 void ShowHello(APCAPI::APC40MkII &apc)
 {
-    apc.setTrackSelector(7);
+    apc.setTrackSelector(7, true);
     apc.setMasterSelector(true);
     apc.setTrackActivator(2, true);
-    apc.setTrackAB(0, APCAPI::TrackAB::Off);
-    apc.setTrackAB(1, APCAPI::TrackAB::Yellow);
-    apc.setTrackAB(2, APCAPI::TrackAB::Orange);
+    apc.setTrackAB(0, APCAPI::DualColor::Off);
+    apc.setTrackAB(1, APCAPI::DualColor::Yellow);
+    apc.setTrackAB(2, APCAPI::DualColor::Orange);
     apc.setTrackKnobRingType(0, APCAPI::RingType::Off);
     apc.setTrackKnobRingType(1, APCAPI::RingType::Pan);
     apc.setTrackKnobRingType(2, APCAPI::RingType::Single);

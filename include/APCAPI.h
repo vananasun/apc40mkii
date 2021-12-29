@@ -10,26 +10,12 @@
 */
 
 #pragma once
+#include "./APCAPI_Types.h"
 #include "./APCAPI_Colors.h"
 #include "./APCAPI_Events.h"
-#include <string>
 
 namespace APCAPI
 {
-
-    typedef void (*ErrorCallback)(const std::string& msg, void *userData);
-
-
-    /**
-     *  \brief The firmware mode.
-     */
-    enum class Mode
-    {
-        Generic = 0, // I highly recommend against this mode
-        Ableton = 1, // Default (and recommended) for this API
-        AlternateAbleton = 2,
-    };
-
 
     class APC40MkII
     {
@@ -57,31 +43,32 @@ namespace APCAPI
         void setSends(bool enabled);
         void setUser(bool enabled);
         void setMasterSelector(bool enabled);
-        void setDeviceOnOff(bool enabled);
-        void setDeviceLock(bool enabled);
-        void setDeviceLeft(bool enabled);
-        void setDeviceRight(bool enabled);
-        void setDeviceKnob(int knobIndex, unsigned char value);
-        void setDeviceKnobRingType(int knobIndex, RingType type);
+        void setClipDeviceView(bool enabled, PageIndex page = 0);
+        void setDetailView(bool enabled, PageIndex page = 0);
+        void setBankLeft(bool enabled, PageIndex page = 0);
+        void setBankRight(bool enabled, PageIndex page = 0);
+        void setDeviceLeft(bool enabled, PageIndex page = 0);
+        void setDeviceRight(bool enabled, PageIndex page = 0);
+        void setDeviceOnOff(bool enabled, PageIndex page = 0);
+        void setDeviceLock(bool enabled, PageIndex page = 0);
+        void setDeviceKnob(KnobIndex knob, KnobValue value, PageIndex page = 0);
+        void setDeviceKnobRingType(KnobIndex knob, RingType type, PageIndex page = 0);
         void setBank(bool enabled);
-        void setBankLeft(bool enabled);
-        void setBankRight(bool enabled);
-        void setClipDeviceView(bool enabled);
-        void setDetailView(bool enabled);
 
-        void setTrackSelector(int trackId);
-        void setTrackActivator(int trackId, bool enabled);
-        void setTrackSolo(int trackId, bool enabled);
-        void setTrackRecord(int trackId, bool enabled);
-        void setTrackAB(int trackId, TrackAB state);
-        void setTrackKnob(int knobIndex, unsigned char value);
-        void setTrackKnobRingType(int knobIndex, RingType type);
-        void setClipStop(int trackId, ClipStopLED state = ClipStopLED::On);
+        void setTrackSelector(TrackIndex track, bool enabled); // unavailable in Generic mode
+        void setTrackActivator(TrackIndex track, bool enabled);
+        void setTrackSolo(TrackIndex track, bool enabled);
+        void setTrackRecord(TrackIndex track, bool enabled);
+        void setTrackAB(TrackIndex track, DualColor state);
+        void setTrackKnob(KnobIndex knob, KnobValue value);
+        void setTrackKnobRingType(KnobIndex knob, RingType type);
+        void setClipStop(TrackIndex track, ClipStopLED state = ClipStopLED::On);
 
         void setClip(int x, int y, Color color, LEDType type = LEDType::Primary);
-        void setSceneLaunch(int row, Color color, LEDType type = LEDType::Primary);
+        void setSceneLaunch(SceneIndex row, Color color, LEDType type = LEDType::Primary);
 
     };
 
+    
 
 };
