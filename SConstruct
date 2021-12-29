@@ -57,7 +57,3 @@ def defineTestProgram(filename):
 
 defineTestProgram('test')
 defineTestProgram('test-mode0')
-
-#test_objects = [ env.Object(target=build_dir+'/test-mode0.obj', source='tests/test-mode0.cpp') ]
-#test = env.Program(build_dir+'/test-mode0.exe', source=test_objects, LIBS=[build_dir+'/APC40MkII.lib', 'Winmm'])
-#env.AlwaysBuild(test)
