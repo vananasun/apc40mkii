@@ -38,7 +38,6 @@ namespace APCAPI
         void setRecord(bool enabled);
         void setSession(bool enabled);
         void setMetronome(bool enabled);
-        void setTapTempo(bool enabled);
         void setPan(bool enabled);
         void setSends(bool enabled);
         void setUser(bool enabled);

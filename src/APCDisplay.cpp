@@ -52,7 +52,6 @@ void APC40MkII::resetDisplay()
     setPlay(false);
     setRecord(false);
     setSession(false);
-    setTapTempo(false);
     setMasterSelector(false);
 
 }

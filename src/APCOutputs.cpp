@@ -29,7 +29,6 @@ void APC40MkII::setPlay(bool enabled) { setBooleanLED(0x5B); }
 void APC40MkII::setRecord(bool enabled) { setBooleanLED(0x5D); }
 void APC40MkII::setSession(bool enabled) { setBooleanLED(0x66); }
 void APC40MkII::setMetronome(bool enabled) { setBooleanLED(0x5A); }
-void APC40MkII::setTapTempo(bool enabled) { setBooleanLED(0x63); }
 void APC40MkII::setPan(bool enabled) { setBooleanLED(0x57); }
 void APC40MkII::setSends(bool enabled) { setBooleanLED(0x58); }
 void APC40MkII::setUser(bool enabled) { setBooleanLED(0x59); }
