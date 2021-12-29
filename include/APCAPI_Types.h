@@ -21,9 +21,10 @@ namespace APCAPI
     
     typedef int SceneIndex;
     typedef int TrackIndex;
+    typedef int PageIndex;
+    typedef int ClipIndex;
     typedef int KnobIndex;
     typedef int KnobValue;
-    typedef int PageIndex;
     
     /**
      *  \brief A knob's LED style. Default is Single.

@@ -152,12 +152,12 @@ namespace APCAPI
             bool pressed;
         };
         union {
-            unsigned char trackId = 0;
-            unsigned char sceneId;
-            unsigned char clipId;
-            unsigned char knobId;
+            TrackIndex trackId = 0;
+            SceneIndex sceneId;
+            ClipIndex clipId;
+            KnobIndex knobId;
         };
-        unsigned char pageId; // only for mode 0 banked stuff
+        PageIndex pageId; // only for mode 0 banked stuff
     };
 
 
