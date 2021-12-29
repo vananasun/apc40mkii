@@ -1,7 +1,12 @@
+"""
+Currently only supports MSVC++
+"""
+
 import fnmatch
 import sys
 import os
 from subprocess import call
+
 
 
 env = Environment(
@@ -45,6 +50,14 @@ for s in lib_sources:
 env.StaticLibrary(build_dir+'/APC40MkII.lib', source=lib_objects, LIBS=['Winmm'])
 
 # Build tests
-test_objects = [ env.Object(target=build_dir+'/test.obj', source='tests/test.cpp') ]
-test = env.Program(build_dir+'/test.exe', source=test_objects, LIBS=[build_dir+'/APC40MkII.lib', 'Winmm'])
-env.AlwaysBuild(test)
+def defineTestProgram(filename):
+    test_objects = [ env.Object(target=build_dir+'/'+filename+'.obj', source='tests/'+filename+'.cpp') ]
+    test = env.Program(build_dir+'/'+filename+'.exe', source=test_objects, LIBS=[build_dir+'/APC40MkII.lib', 'Winmm'])
+    env.AlwaysBuild(test)
+
+defineTestProgram('test')
+defineTestProgram('test-mode0')
+
+#test_objects = [ env.Object(target=build_dir+'/test-mode0.obj', source='tests/test-mode0.cpp') ]
+#test = env.Program(build_dir+'/test-mode0.exe', source=test_objects, LIBS=[build_dir+'/APC40MkII.lib', 'Winmm'])
+#env.AlwaysBuild(test)

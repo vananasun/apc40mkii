@@ -149,6 +149,7 @@ namespace APCAPI
         union {
             unsigned char value = 0; // 0 to 127
             char direction; // +, -
+            bool pressed;
         };
         union {
             unsigned char trackId = 0;
@@ -156,6 +157,7 @@ namespace APCAPI
             unsigned char clipId;
             unsigned char knobId;
         };
+        unsigned char pageId; // only for mode 0 banked stuff
     };
 
 

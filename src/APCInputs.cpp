@@ -1,6 +1,7 @@
 #include "./APCCore.h"
 #include <APCAPI.h>
 #include <vector>
+#include <iostream>
 
 using namespace APCAPI;
 
@@ -10,16 +11,35 @@ using namespace APCAPI;
  */
 static inline bool isOnMsg(std::vector<unsigned char>& msg)
 {
-    return ((msg[0] & 0x90) == 0x90);
+    return ((msg[0] >> 4) & 0x01); // 0x9x becomes true, 0x8x becomes false
+}
+
+/**
+ *  \param msg MIDI message byte vector
+ *  \returns Whether the given MIDI message was a controller change message.
+ */
+static inline bool isControllerMsg(std::vector<unsigned char>& msg)
+{
+    return ((msg[0] >> 5) & 0x01); // 0xBx becomes true
+}
+
+/**
+ *  \brief Used for banked device controls and track IDs.
+ *  \param msg MIDI message byte vector
+ *  \returns MIDI channel of message
+ */
+static inline unsigned char getChannel(std::vector<unsigned char>& msg)
+{
+    return (msg[0] & 0x0F);
 }
 
 
 
-void APC40MkII::APCCore::handleKnobsAndFaders(std::vector<unsigned char>& msg, Event* event)
+void APC40MkII::APCCore::handleValueControls(std::vector<unsigned char>& msg, Event* event)
 {
     if (msg[1] == 0x07) {
         event->type = EventType::TrackFader;
-        event->trackId = msg[0] & 0x0F; // track index
+        event->trackId = getChannel(msg); // track index
     } else if (msg[1] == 0x0D) {
         event->type = EventType::Tempo;
         event->direction = (msg[2] == 1) ? 1 : -1;
@@ -31,38 +51,40 @@ void APC40MkII::APCCore::handleKnobsAndFaders(std::vector<unsigned char>& msg, E
     } else if (msg[1] >= 0x10 && msg[1] <= 0x17) {
         event->type = EventType::DeviceKnob;
         event->knobId = msg[1] - 0x10; // physical knob index
+        event->pageId = getChannel(msg); // for mode 0 banking
     } else if (msg[1] == 0x2F) {
         event->type = EventType::CueLevel;
         event->direction = (msg[2] <= 63) ? msg[2] : msg[2] + 0x80;
         return;
     } else if (msg[1] >= 0x30 && msg[1] <= 0x37) {
         event->type = EventType::TrackKnob;
-        event->trackId = msg[1] - 0x30; // knob index
+        event->knobId = msg[1] - 0x30; // knob index (same as trackId)
     }
     event->value = msg[2];  
 }
 
 
-void APC40MkII::APCCore::handleTrackMessages(std::vector<unsigned char>& msg, Event* event)
+void APC40MkII::APCCore::handleTrackControls(std::vector<unsigned char>& msg, Event* event)
 {
-    event->trackId = msg[0] & 0x0F;
+    unsigned char chan = getChannel(msg);
 
-    if        (msg[1] == 0x30) { event->type = EventType::TrackRecord;
-    } else if (msg[1] == 0x31) { event->type = EventType::TrackSolo;
-    } else if (msg[1] == 0x32) { event->type = EventType::TrackActivator;
-    } else if (msg[1] == 0x33) { event->type = EventType::TrackSelector;
-    } else if (msg[1] == 0x34) { event->type = EventType::ClipStop;
-    } else if (msg[1] == 0x3A) { event->type = EventType::DeviceLeft;
-    } else if (msg[1] == 0x3B) { event->type = EventType::DeviceRight;
-    } else if (msg[1] == 0x3C) { event->type = EventType::BankLeft;
-    } else if (msg[1] == 0x3D) { event->type = EventType::BankRight;
-    } else if (msg[1] == 0x3E) { event->type = EventType::DeviceOnOff;
-    } else if (msg[1] == 0x3F) { event->type = EventType::DeviceLock;
-    } else if (msg[1] == 0x40) { event->type = EventType::ClipDeviceView;
-    } else if (msg[1] == 0x41) { event->type = EventType::DetailView;
-    } else if (msg[1] == 0x42) { event->type = EventType::TrackAB; }
+    if        (msg[1] == 0x30) { event->type = EventType::TrackRecord;    event->trackId = chan;
+    } else if (msg[1] == 0x31) { event->type = EventType::TrackSolo;      event->trackId = chan;
+    } else if (msg[1] == 0x32) { event->type = EventType::TrackActivator; event->trackId = chan;
+    } else if (msg[1] == 0x33) { event->type = EventType::TrackSelector;  event->trackId = chan;
+    } else if (msg[1] == 0x34) { event->type = EventType::ClipStop;       event->trackId = chan;
+    } else if (msg[1] == 0x3A) { event->type = EventType::DeviceLeft;     event->pageId  = chan;
+    } else if (msg[1] == 0x3B) { event->type = EventType::DeviceRight;    event->pageId  = chan;
+    } else if (msg[1] == 0x3C) { event->type = EventType::BankLeft;       event->pageId  = chan;
+    } else if (msg[1] == 0x3D) { event->type = EventType::BankRight;      event->pageId  = chan;
+    } else if (msg[1] == 0x3E) { event->type = EventType::DeviceOnOff;    event->pageId  = chan;
+    } else if (msg[1] == 0x3F) { event->type = EventType::DeviceLock;     event->pageId  = chan;
+    } else if (msg[1] == 0x40) { event->type = EventType::ClipDeviceView; event->pageId  = chan;
+    } else if (msg[1] == 0x41) { event->type = EventType::DetailView;     event->pageId  = chan;
+    } else if (msg[1] == 0x42) { event->type = EventType::TrackAB;        event->trackId = chan;
+    }
     
-    event->value = static_cast<unsigned char>(isOnMsg(msg));
+    event->pressed = isOnMsg(msg);
 }
 
 
@@ -72,7 +94,7 @@ void APC40MkII::APCCore::handleButtons(std::vector<unsigned char>& msg, Event* e
     #define handleToggleMsgCode(cc, event_type, code)/**/\
         if (msg[1] == cc) {\
             event->type = event_type;\
-            event->value = isOnMsg(msg);\
+            event->pressed = isOnMsg(msg);\
             code\
             return;\
         }
@@ -96,16 +118,17 @@ void APC40MkII::APCCore::handleButtons(std::vector<unsigned char>& msg, Event* e
     handleToggleMsgCode(0x64, EventType::Nudge, { event->direction = -1; });
     handleToggleMsgCode(0x65, EventType::Nudge, { event->direction = 1; });
 
-    event->value = isOnMsg(msg);
     if (msg[1] >= 0x00 && msg[1] <= 0x27) {
         event->type = EventType::ClipLaunch;
         event->clipId = msg[1];
+        event->pressed = isOnMsg(msg);
     } else if (msg[1] >= 0x52 && msg[1] <= 0x56) {
         event->type = EventType::SceneLaunch;
         event->sceneId = msg[1] - 0x52;
+        event->pressed = isOnMsg(msg);
     } else if (msg[1] == 0x40) {
         event->type = EventType::Footswitch;
-        event->value = msg[2] & 1; // said to be 0x7F when pressed, 0x00 when released
+        event->pressed = msg[2] & 1; // said to be 0x7F when pressed, 0x00 when released
     }
 
 }
@@ -121,10 +144,10 @@ bool APC40MkII::poll(Event* event)
     if (msg.size() < 3) return false;
 
     memset(event, 0, sizeof(Event));
-    if ((msg[0] & 0xF0) == 0xB0) {
-        _->handleKnobsAndFaders(msg, event);
+    if (isControllerMsg(msg)) {
+        _->handleValueControls(msg, event);
     } else if (msg[1] >= 0x30 && msg[1] <= 0x49) {
-        _->handleTrackMessages(msg, event);
+        _->handleTrackControls(msg, event);
     } else {
         _->handleButtons(msg, event);
     }

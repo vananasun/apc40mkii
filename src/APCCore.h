@@ -21,8 +21,8 @@ struct APC40MkII::APCCore
     int findOutputPortIndex();
     void sendStartupMessage(Mode mode);
     void sendMsg(MIDIMessage msg);
-    void handleKnobsAndFaders(std::vector<unsigned char>& msg, Event* event);
-    void handleTrackMessages(std::vector<unsigned char>& msg, Event* event);
+    void handleValueControls(std::vector<unsigned char>& msg, Event* event);
+    void handleTrackControls(std::vector<unsigned char>& msg, Event* event);
     void handleButtons(std::vector<unsigned char>& msg, Event* event);
 
 };
