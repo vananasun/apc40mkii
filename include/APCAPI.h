@@ -34,6 +34,7 @@ namespace APCAPI
 
         /* Host to device output methods */
 
+        void setBank(bool enabled);
         void setPlay(bool enabled);
         void setRecord(bool enabled);
         void setSession(bool enabled);
@@ -52,7 +53,6 @@ namespace APCAPI
         void setDeviceLock(bool enabled, PageIndex page = 0);
         void setDeviceKnob(KnobIndex knob, KnobValue value, PageIndex page = 0);
         void setDeviceKnobRingType(KnobIndex knob, RingType type, PageIndex page = 0);
-        void setBank(bool enabled);
 
         void setTrackSelector(TrackIndex track, bool enabled); // unavailable in Generic mode
         void setTrackActivator(TrackIndex track, bool enabled);
