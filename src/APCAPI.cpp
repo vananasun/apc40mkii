@@ -62,6 +62,7 @@ bool APC40MkII::connect(Mode mode)
         return false;
     }
     
+    _->m_midiIn->ignoreTypes();
     _->m_midiIn->setErrorCallback(APCCore::RtMidiErrorCallback, this);
     _->m_midiOut->setErrorCallback(APCCore::RtMidiErrorCallback, this);
 
