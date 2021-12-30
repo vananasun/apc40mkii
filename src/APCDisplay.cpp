@@ -93,7 +93,7 @@ inline static const RGB S_COLORS[] = {
     { 160,  0,  0 },{  53,  0,  0 },{  26,208,  0 },{   7, 66,  0 },{ 185,176,  0 },{  63, 49,  0 },{ 179, 95,  0 },{  75, 21,  2 }
 };
 
-const RGB APCAPI::Color2RGB(Color color)
+RGB APCAPI::Color2RGB(Color color)
 {
     return S_COLORS[(int)color];
 }

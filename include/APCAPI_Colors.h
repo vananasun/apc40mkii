@@ -86,8 +86,8 @@ namespace APCAPI
 
     /** Utility functions */
     
-    struct RGB { unsigned char r,g,b; };
+    typedef struct { unsigned char r,g,b; } RGB;
     Color GetNearestColor(RGB rgb);
-    const RGB Color2RGB(Color color);
+    RGB Color2RGB(Color color);
 
 }
