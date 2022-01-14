@@ -119,20 +119,6 @@ namespace APCAPI
     };
 
 
-    /**
-     *  \brief Converts a clip ID to a set of X,Y coordinates.
-     *         [0,0] = Bottom left!
-     * 
-     *  \param clipId
-     * 
-     *  \returns [ x, y ]
-     */
-    inline constexpr std::pair<ClipCoord,ClipCoord> ClipId2Coords(ClipIndex clipId)
-    {
-        return { static_cast<ClipCoord>(clipId & 7), static_cast<ClipCoord>(clipId >> 3) };
-    }
-
-
     /**  \see tests/test.cpp GetEventInfo() */
     struct Event
     {

@@ -9,13 +9,13 @@ void APC40MkII::resetDisplay()
 {
     if (!_->m_connected) return;
 
-    for (int y = 0; y < 6; y++) {
-        for (int x = 0; x < 8; x++) {
-            setClip(x, y, Color::Off);
+    for (ClipCoord y = 0; y < 6; y++) {
+        for (ClipCoord x = 0; x < 8; x++) {
+            setClip({x, y}, Color::Off);
         }
     }
 
-    for (int iTrack = 0; iTrack < 8; iTrack++) {
+    for (TrackIndex iTrack = 0; iTrack < 8; iTrack++) {
         setClipStop(iTrack, ClipStopLED::Off);
         setTrackActivator(iTrack, false);
         setTrackAB(iTrack, DualColor::Off);
@@ -26,11 +26,11 @@ void APC40MkII::resetDisplay()
         setTrackSelector(iTrack, false);
     }
 
-    for (int iScene = 0; iScene < 5; iScene++) {
+    for (SceneIndex iScene = 0; iScene < 5; iScene++) {
         setSceneLaunch(iScene, Color::Off);
     }
 
-    for (int iPage = 0; iPage < 9; iPage++) {
+    for (PageIndex iPage = 0; iPage < 9; iPage++) {
         for (int iKnob = 0; iKnob < 8; iKnob++) {
             setDeviceKnob(iKnob, 0, iPage);
             setDeviceKnobRingType(iKnob, RingType::Off, iPage);

@@ -63,7 +63,7 @@ namespace APCAPI
         void setTrackKnobRingType(KnobIndex knob, RingType type);
         void setClipStop(TrackIndex track, ClipStopLED state = ClipStopLED::On);
 
-        void setClip(ClipCoord x, ClipCoord y, Color color, LEDType type = LEDType::Primary);
+        void setClip(ClipCoords coords, Color color, LEDType type = LEDType::Primary);
         void setSceneLaunch(SceneIndex row, Color color, LEDType type = LEDType::Primary);
 
     };

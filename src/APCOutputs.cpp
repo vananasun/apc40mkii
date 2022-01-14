@@ -179,13 +179,13 @@ void APC40MkII::setSceneLaunch(SceneIndex row, Color color, LEDType type)
     });
 }
 
-void APC40MkII::setClip(ClipCoord x, ClipCoord y, Color color, LEDType type)
+void APC40MkII::setClip(ClipCoords coords, Color color, LEDType type)
 {
     if (!_->m_connected) return;
-    if (x > 7 || y > 4) return;
+    if (coords.x > 7 || coords.y > 4) return;
     _->sendMsg({
         (unsigned char)((color == Color::Off ? 0x80 : 0x90) | (unsigned char)type),
-        (unsigned char)(x + (y * 8)),
+        (unsigned char)ClipCoords2Id(coords),
         (unsigned char)color
     });
 }

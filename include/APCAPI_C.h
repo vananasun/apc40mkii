@@ -73,6 +73,7 @@ APC_API void APCDev_SetSceneLaunch(APCDev*,  APCScene row, APCColor color, APCLE
 
 APC_API const char* APC_GetEventTypeString(APCEventType type);
 APC_API APCClipCoords APC_ClipId2Coords(APCClip id);
+APC_API APCClip APC_ClipCoords2Id(APCClipCoords coords) {
 
 APC_API APCColor APC_GetNearestColor(APCRGB rgb);
 APC_API APCRGB APC_Color2RGB(APCColor color);

@@ -22,10 +22,9 @@ namespace APCAPI
     typedef unsigned char SceneIndex;
     typedef unsigned char TrackIndex;
     typedef unsigned char PageIndex;
-    typedef unsigned char ClipIndex;
-    typedef unsigned char ClipCoord;
     typedef unsigned char KnobIndex;
     typedef unsigned char KnobValue;
+
     
     /**
      *  \brief A knob's LED style. Default is Single.
@@ -52,5 +51,37 @@ namespace APCAPI
         AlternateAbleton = 2, // Full control by host, which makes it laggier
     };
 
+
+    typedef unsigned char ClipIndex;
+    typedef unsigned char ClipCoord;
+    typedef struct {
+        ClipCoord x;
+        ClipCoord y;
+    } ClipCoords;
+
+    /**
+     *  \brief Converts a clip ID to a set of X,Y coordinates.
+     *         [0,0] = Bottom left!
+     * 
+     *  \param clipId
+     * 
+     *  \returns [ x, y ]
+     */
+    inline constexpr ClipCoords ClipId2Coords(ClipIndex clipId)
+    {
+        return { static_cast<ClipCoord>(clipId & 7), static_cast<ClipCoord>(clipId >> 3) };
+    }
+
+    /**
+     *  \brief Converts clip X,Y coordinates to it's corresponding clip index.
+     * 
+     *  \param coords [0,0] = Bottom left!
+     * 
+     *  \returns ClipIndex
+     */
+    inline constexpr ClipIndex ClipCoords2Id(ClipCoords coords)
+    {
+        return coords.x | (coords.y << 3);
+    }
 
 }

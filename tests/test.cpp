@@ -88,7 +88,7 @@ void ShowHello(APCAPI::APC40MkII &apc)
                 apc.setSceneLaunch(y, col);
         else
             for (APCAPI::ClipCoord y = 0; y < 5; y++)
-                apc.setClip(x, y, col);
+                apc.setClip({x, y}, col);
     }
 
 }

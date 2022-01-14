@@ -181,4 +181,8 @@ APCClipCoords APC_ClipId2Coords(APCClip id) {
     return { (unsigned char)(id & 7), (unsigned char)(id >> 3) };
 }
 
+APCClip APC_ClipCoords2Id(APCClipCoords coords) {
+    return (coords.x | (coords.y << 3));
+}
+
 #endif // APCAPI_EXPORT_C
