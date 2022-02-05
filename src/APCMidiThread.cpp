@@ -40,7 +40,7 @@ void APCMidiThread::threadProc()
     std::unique_lock<std::mutex> lock(m_mutex);
 
     do {
-        m_cond.wait(lock, [this] { return m_messageQueue.size(); } );
+        m_cond.wait(lock, [this] { return (m_messageQueue.size()) || (!m_threadRunning); } );
 
         while (m_messageQueue.size() > 0) {
             MIDIMessage msg = m_messageQueue.front();
